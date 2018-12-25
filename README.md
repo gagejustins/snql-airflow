@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # docker-airflow
 [![CircleCI](https://circleci.com/gh/puckel/docker-airflow/tree/master.svg?style=svg)](https://circleci.com/gh/puckel/docker-airflow/tree/master)
 [![Docker Build Status](https://img.shields.io/docker/build/puckel/docker-airflow.svg)]()
@@ -125,3 +126,7 @@ You can also use this to run a bash shell or any other command in the same envir
 # Wanna help?
 
 Fork, improve and PR. ;-)
+=======
+# snql-airflow
+Airflow code for the SNQL project.
+>>>>>>> a937800f071298ac3b5c9eb9a502541311d8b4d2
