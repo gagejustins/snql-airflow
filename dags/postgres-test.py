@@ -16,7 +16,7 @@ dag = DAG(
 	schedule_interval='0 2 * * *')
 
 def hello_world():
-	return "helerrrr!"
+	print("helerrrr!")
 
 def select():
 	hook = PostgresHook('snql')
