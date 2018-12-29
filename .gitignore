@@ -131,3 +131,6 @@ venv.bak/
 # mypy
 .mypy_cache/
 >>>>>>> a937800f071298ac3b5c9eb9a502541311d8b4d2
+
+#Setup script with passwords
+scripts/setup.sh
