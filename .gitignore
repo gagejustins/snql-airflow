@@ -139,4 +139,4 @@ scripts/setup.sh
 Makefile
 
 #Airflow config with email password
-config/
+config/*
