@@ -134,3 +134,9 @@ venv.bak/
 
 #Setup script with passwords
 scripts/setup.sh
+
+#Makefile
+Makefile
+
+#Airflow config with email password
+config/
