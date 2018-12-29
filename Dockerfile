@@ -86,5 +86,3 @@ USER airflow
 WORKDIR ${AIRFLOW_HOME}
 ENTRYPOINT ["scripts/entrypoint.sh"]
 CMD ["webserver"] # set default arg for entrypoint 
-
-
