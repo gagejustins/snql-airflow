@@ -10,6 +10,8 @@ class SQLTemplatedPythonOperator(PythonOperator):
 default_args = {
     'owner': 'jgage',
     'depends_on_past': False,
+    'email_on_failure': True,
+    'email': 'gagejustins+airflow@gmail.com',
     'retries': 3
 }
 
@@ -115,6 +117,8 @@ def delete_from_staging():
 create_staging_table = PythonOperator(
     task_id = 'create_staging_table',
     python_callable = create_staging,
+    email_on_failure = True,
+    email = 'gagejustins+airflow@gmail.com',
     dag = dag
 )
 
@@ -123,6 +127,8 @@ pull_and_insert_to_staging = SQLTemplatedPythonOperator(
     templates_dict = {'query': 'dim_sneakers/extract.sql'},
     python_callable = pull_and_insert,
     params = {'ds': datetime.utcnow()},
+    email_on_failure = True,
+    email = 'gagejustins+airflow@gmail.com',
     provide_context=True,
     dag = dag
 )
@@ -130,6 +136,8 @@ pull_and_insert_to_staging = SQLTemplatedPythonOperator(
 create_target_table = PythonOperator(
     task_id = 'create_target_table',
     python_callable = create_target,
+    email_on_failure = True,
+    email = 'gagejustins+airflow@gmail.com',
     dag = dag
 )
 
@@ -138,6 +146,8 @@ populate_target_table = SQLTemplatedPythonOperator(
     templates_dict = {'query': 'dim_sneakers/set_current.sql'},
     python_callable = populate_target,
     params = {'ds': datetime.utcnow()},
+    email_on_failure = True,
+    email = 'gagejustins+airflow@gmail.com',
     provide_context = True,
     dag = dag
 )
@@ -145,6 +155,8 @@ populate_target_table = SQLTemplatedPythonOperator(
 delete_from_staging = PythonOperator(
     task_id = 'delete_from_staging',
     python_callable = delete_from_staging,
+    email_on_failure = True,
+    email = 'gagejustins+airflow@gmail.com',
     dag = dag
 )
 
