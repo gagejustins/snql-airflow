@@ -5,7 +5,6 @@ with events as (
 		sum(case when event_type = 'clean' then 1 else 0 end) as count_cleans,
 		sum(case when event_type = 'walk' then 1 else 0 end) as count_walks
 	from sneaker_events
-	/* where event_time <= DATE('{{ ds }}') */
 	group by 1
 )
 select 
@@ -22,9 +21,7 @@ select
 	e.count_wears,
 	e.count_cleans,
 	e.count_walks,
-	DATE('{{ ds }}') as updated_at,
-	/* TRUE as is_current */
+	DATE('{{ ds }}') as updated_at
 from sneakers s
 left join manufacturers m on s.manufacturer_id = m.id
 left join events e on s.id = e.sneaker_id
-/* where s.created_at <= DATE('{{ ds }}') */
