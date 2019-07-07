@@ -18,7 +18,7 @@ default_args = {
 dag = DAG(
     dag_id='dim_sneakers',
     default_args=default_args,
-    start_date=datetime(2018, 12, 21),
+    start_date=datetime(2019, 7, 5),
     schedule_interval='0 2 * * *',
     template_searchpath='sql/'
 )
@@ -39,10 +39,9 @@ def create_staging():
                 count_wears INT,
                 count_cleans INT,
                 count_walks INT,
-                updated_at TIMESTAMP,
-                is_current BOOLEAN);"""
-
-    delete_sql = """DELETE FROM dim_sneakers"""
+                updated_at TIMESTAMP);"""
+    
+    #is_current BOOLEAN
 
     #Initialize staging hook
     staging_hook = PostgresHook('snql_staging')
@@ -51,7 +50,7 @@ def create_staging():
     staging_hook.run(create_sql)
 
     #Run delete records query
-    staging_hook.run(delete_sql)
+    staging_hook.run("""DELETE FROM dim_sneakers""")
 
 def pull_and_insert(**kwargs):
 
@@ -82,8 +81,9 @@ def create_target():
                 count_wears INT,
                 count_cleans INT,
                 count_walks INT,
-                updated_at TIMESTAMP,
-                is_current BOOLEAN);"""
+                updated_at TIMESTAMP);"""
+
+    #is_current BOOLEAN
 
     #Initialize target hook
     snql_hook = PostgresHook('snql')
@@ -95,19 +95,19 @@ def populate_target(**kwargs):
 
     #Pull data from staging
     staging_hook = PostgresHook('snql_staging')
-    results = staging_hook.get_records("SELECT * FROM dim_sneakers")
+    #Pull query from sql directory
+    query = kwargs['templates_dict']['query']
+    #Execute query
+    staging_results = staging_hook.get_records(query)
 
     #Initialize hook to snql
     snql_hook = PostgresHook('snql')
 
-    #Pull query from sql directory
-    set_current_query = kwargs['templates_dict']['query']
+    #Delete current rows in target table table
+    snql_hook.run("""DELETE FROM dim_sneakers""")
 
-    #Set current dim_sneakers.is_current to FALSE
-    snql_hook.run(set_current_query)
-
-    #Insert into target table
-    snql_hook.insert_rows('dim_sneakers', results)
+    #Insert new rows into target table
+    snql_hook.insert_rows('dim_sneakers', staging_results)
 
 def delete_from_staging():
 
@@ -143,7 +143,7 @@ create_target_table = PythonOperator(
 
 populate_target_table = SQLTemplatedPythonOperator(
     task_id = 'populate_target_table',
-    templates_dict = {'query': 'dim_sneakers/set_current.sql'},
+    templates_dict = {'query': 'dim_sneakers/pull_from_staging.sql'},
     python_callable = populate_target,
     params = {'ds': datetime.utcnow()},
     email_on_failure = True,
