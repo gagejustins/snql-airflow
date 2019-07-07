@@ -9,4 +9,4 @@ To get Airflow running, you'll need to do two things:
 * Create a scripts/setup.sh file that (a) exports a Fernet Key as an environment variable and (b) adds your Airflow connections (`airflow connections -a --conn_id --conn_uri`)
 * Run the Airflow scheduler inside the container(s) you create (`airflow scheduler`)
 
-It's not how Docker is supposed to work, but waddaya gonna do.
+It's not how Docker is supposed to work, but what can you do
